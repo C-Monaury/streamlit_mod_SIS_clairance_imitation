@@ -45,7 +45,7 @@ st.latex(r'''
 )
 st.write("On addimentionne ce système en posant:")
 st.latex(r'''
-         i = \frac{I}{N}, c = \frac{\gamma}{\sigma}, \tau = t  \sigma, x = \frac{X}{N},\kappa = \frac{\pi_C}{\pi_D}, a = \frac{A}{\sigma}, b(\gamma)=\frac{N \beta ^{'}(\gamma){\sigma}
+         i = \frac{I}{N}, c = \frac{\gamma}{\sigma}, \tau = t  \sigma, x = \frac{X}{N},\kappa = \frac{\pi_C}{\pi_D}, a = \frac{A}{\sigma}, b(\gamma)=\frac{N \beta ^{'}(\gamma)}{\sigma}
          ''' 
 )
 st.write("Ce qui nous donne le système suivant:")
