@@ -38,7 +38,7 @@ st.latex(r'''
     \begin{array}{r c l}
         \frac{dI}{dt}   & = & (1 - \frac{X}{N})\beta(\gamma)  (N - I)  I - \gamma I \\
         \frac{d \gamma}{dt}   & = & A  \gamma [\beta^{'}(\gamma) (N - I) - 1 ] \\
-        \frac{dx}{dt}   & = & \sigma  \frac{X}{N}  (1-\frac{X}{N})(r_D  \frac{I}{N} - r_C)
+        \frac{dX}{dt}   & = & \sigma  \frac{X}{N}  (1-\frac{X}{N})(r_D  \frac{I}{N} - r_C)
    \end{array}
    \right.
              ''' 
