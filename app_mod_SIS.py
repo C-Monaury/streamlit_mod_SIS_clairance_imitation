@@ -45,7 +45,7 @@ st.latex(r'''
 )
 st.write("On addimentionne ce système en posant:")
 st.latex(r'''
-         i = \frac{I}{N}, c = \frac{\gamma}{\sigma}, \tau = t  \sigma, x = \frac{X}{N},\kappa = \frac{\pi_C}{\pi_D}
+         i = \frac{I}{N}, c = \frac{\gamma}{\sigma}, \tau = t  \sigma, x = \frac{X}{N},\kappa = \frac{\pi_C}{\pi_D}, a = \frac{A}{\sigma}, b(\gamma)=\frac{N \beta ^{'}(\gamma){\sigma}
          ''' 
 )
 st.write("Ce qui nous donne le système suivant:")
@@ -54,7 +54,7 @@ st.latex(r'''
     \begin{array}{r c l}
         \frac{di}{d \tau}   & = & (1 - x ) b(c) (1 - i)  i - c i \\
         \frac{dc}{d \tau}   & = & a  c [b^{'}(c)  (1 - i) - 1 ] \\
-        \frac{dx}{d \tau}   & = & \sigma  x  (1-x)( i - \kappa)
+        \frac{dx}{d \tau}   & = &  x  (1-x)( i - \kappa)
    \end{array}
    \right.
              ''' 
