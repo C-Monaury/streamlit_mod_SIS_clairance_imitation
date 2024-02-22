@@ -52,7 +52,7 @@ st.write("Ce qui nous donne le système suivant:")
 st.latex(r'''
     \left  \{
     \begin{array}{r c l}
-        \frac{di}{d \tau}   & = & (1 - x ) b(c) * (1 - i)  i - c i \\
+        \frac{di}{d \tau}   & = & (1 - x ) b(c) (1 - i)  i - c i \\
         \frac{dc}{d \tau}   & = & a  c [b^{'}(c)  (1 - i) - 1 ] \\
         \frac{dx}{d \tau}   & = & \sigma  x  (1-x)( i - \kappa)
    \end{array}
