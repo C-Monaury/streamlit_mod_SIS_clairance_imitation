@@ -17,8 +17,8 @@ st.write("On part du système SIS suivant:")
 st.latex(r'''
     \left  \{
     \begin{array}{r c l}
-      \frac{dS}{dt}  & = & B + \gamma *I -\beta * S * I \\
-      \frac{dI}{dt}   & = & \beta * S * I - \gamma *I 
+      \frac{dS}{dt}  & = & B + \gamma I -\beta  S  I \\
+      \frac{dI}{dt}   & = & \beta  S  I - \gamma I 
    \end{array}
    \right.
              ''' 
@@ -27,7 +27,7 @@ st.write("Que l'on réduit à une équation en posant N=S+I:")
 st.latex(r'''
     \left  \{
     \begin{array}{r c l}
-      \frac{dI}{dt}   & = & \beta * (N - I) * I - \gamma *I 
+      \frac{dI}{dt}   & = & \beta  (N - I)  I - \gamma I 
    \end{array}
    \right.
              ''' 
@@ -36,25 +36,25 @@ st.write("On couple ce système avec avec une dynamique d'imitation et un trade 
 st.latex(r'''
     \left  \{
     \begin{array}{r c l}
-        \frac{dI}{dt}   & = & (1 - \frac{X}{N})\beta(\gamma) * (N - I) * I - \gamma *I \\
-        \frac{d \gamma}{dt}   & = & A * \gamma [\beta^{'}(\gamma) * (N - I) - 1 ] \\
-        \frac{dx}{dt}   & = & \sigma * \frac{X}{N} * (1-\frac{X}{N})*(r_D * \frac{I}{N} - r_C)
+        \frac{dI}{dt}   & = & (1 - \frac{X}{N})\beta(\gamma)  (N - I)  I - \gamma I \\
+        \frac{d \gamma}{dt}   & = & A  \gamma [\beta^{'}(\gamma) (N - I) - 1 ] \\
+        \frac{dx}{dt}   & = & \sigma  \frac{X}{N}  (1-\frac{X}{N})(r_D  \frac{I}{N} - r_C)
    \end{array}
    \right.
              ''' 
 )
 st.write("On addimentionne ce système en posant:")
 st.latex(r'''
-         i = \frac{I}{N}, c = \frac{\gamma}{\sigma}, \tau = t * \sigma, x = \frac{X}{N},\kappa = \frac{\pi_C}{\pi_D}
+         i = \frac{I}{N}, c = \frac{\gamma}{\sigma}, \tau = t  \sigma, x = \frac{X}{N},\kappa = \frac{\pi_C}{\pi_D}
          ''' 
 )
 st.write("Ce qui nous donne le système suivant:")
 st.latex(r'''
     \left  \{
     \begin{array}{r c l}
-        \frac{di}{d \tau}   & = & (1 - x )* b(c) * (1 - i) * i - c *i \\
-        \frac{dc}{d \tau}   & = & a * c [b^{'}(c) * (1 - i) - 1 ] \\
-        \frac{dx}{d \tau}   & = & \sigma * x * (1-x)*( i - \kappa)
+        \frac{di}{d \tau}   & = & (1 - x ) b(c) * (1 - i)  i - c i \\
+        \frac{dc}{d \tau}   & = & a  c [b^{'}(c)  (1 - i) - 1 ] \\
+        \frac{dx}{d \tau}   & = & \sigma  x  (1-x)( i - \kappa)
    \end{array}
    \right.
              ''' 
