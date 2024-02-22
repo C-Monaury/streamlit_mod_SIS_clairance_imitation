@@ -76,9 +76,9 @@ with col1:
 
 with col2: 
     st.write("Paramètres d'intérets")
-    pay = st.slider("Rapport du payement des coopérateurs et des defecteurs",min_value = 0.0, max_value = 10.0,step = 0.1)
-    c = st.slider("Taux de contact",min_value = 0.0, max_value = 10.0,step = 0.1)
-    k= st.slider("Paramètres de formes",min_value = 0.0, max_value = 1.0,step = 0.01)
+    pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.0, max_value = 10.0,step = 0.1)
+    c = st.slider("Capacité d'infection constante",min_value = 0.0, max_value = 10.0,step = 0.1)
+    k= st.slider("Paramètre de forme",min_value = 0.0, max_value = 1.0,step = 0.01)
 
 pay_val = np.linspace(0, 1,5)
 k_val = np.linspace(0, 10,5)
@@ -86,10 +86,10 @@ c_val = np.linspace(0, 10,4)
 
 
 ###########################################Choix du trade offs
-trade_choix = st.selectbox("Choix du trade-off",["cx^gamma","(x*c)/(k+x)"])
+trade_choix = st.selectbox("Choix du trade-off",["cx^k","(x*c)/(k+x)"])
    
     
-if trade_choix == "cx^gamma":
+if trade_choix == "cx^k":
     def beta(x,c, k ):
         return(c*x**k)
     def beta2(x,c, k ):
