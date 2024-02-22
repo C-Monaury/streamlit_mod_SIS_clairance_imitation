@@ -1,6 +1,6 @@
 numpy
 pandas
-scipy.integrate import odeint
-matplotlib.pyplot
+scipy
+matplotlib
 seaborn
 streamlit
