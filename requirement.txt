@@ -1,0 +1,6 @@
+numpy
+pandas
+scipy.integrate import odeint
+matplotlib.pyplot
+seaborn
+streamlit
