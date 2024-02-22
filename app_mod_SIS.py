@@ -45,7 +45,7 @@ st.latex(r'''
 )
 st.write("On addimentionne ce système en posant:")
 st.latex(r'''
-         i = \frac{I}{N}, c = \frac{\gamma}{\sigma}, \tau = t  \sigma, x = \frac{X}{N},\kappa = \frac{\pi_C}{\pi_D}, a = \frac{A}{\sigma}, b(\gamma)=\frac{N \beta ^{'}(\gamma)}{\sigma}
+         i = \frac{I}{N}, c = \frac{\gamma}{\sigma}, \tau = t  \sigma, x = \frac{X}{N},\kappa = \frac{\pi_C}{\pi_D}, a = \frac{A}{\sigma}, b(\gamma)=\frac{N \beta(\gamma)}{\sigma}
          ''' 
 )
 st.write("Ce qui nous donne le système suivant:")
@@ -142,7 +142,7 @@ def model(Y0, t ,sig,pay,c,k,A,N) :
     
     dI = (1 - x) * beta(gamma ,c , k) * I * (1 - I) - gamma * I
     dgamma = A * gamma * (beta2(gamma,c, k) * (N - I) - 1 )
-    dx = sig * x * (1-x)*( I - pay)
+    dx =  sig*x * (1-x)*( I - pay)
     return(dI,dgamma,dx)
 #valeurs de départ
 
