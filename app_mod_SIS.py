@@ -60,7 +60,7 @@ st.latex(r'''
              ''' 
 )
 
-################## PLOT 2D
+
 st.header("Paramètres")
 col1, col2 = st.columns(2)
   
@@ -80,9 +80,7 @@ with col2:
     c = st.slider("Capacité d'infection constante",min_value = 0.0, max_value = 10.0,step = 0.1)
     k= st.slider("Paramètre de forme",min_value = 0.0, max_value = 1.0,step = 0.01)
 
-pay_val = np.linspace(0, 1,5)
-k_val = np.linspace(0, 10,5)
-c_val = np.linspace(0, 10,4)
+
 
 
 ###########################################Choix du trade offs
@@ -141,7 +139,7 @@ def model(Y0, t ,sig,pay,c,k,A,N) :
     
     
     dI = (1 - x) * beta(gamma ,c , k) * I * (1 - I) - gamma * I
-    dgamma = A * gamma * (beta2(gamma,c, k) * (N - I) - 1 )
+    dgamma = A  *gamma* (beta2(gamma,c, k) * (N - I) - 1 )
     dx =  sig*x * (1-x)*( I - pay)
     return(dI,dgamma,dx)
 #valeurs de départ
@@ -183,9 +181,9 @@ fig2 = plt.figure()
 ax = plt.axes(projection='3d')
 for i in range(repet):
     
-    i0 = float(np.random.uniform(0,1,1) )
-    c0= float(np.random.uniform(0,100,1))
-    x0 = float(np.random.uniform(0,1,1))
+    i0 = float(np.random.uniform(0.0001,0.99,1) )
+    c0= float(np.random.uniform(0.01,100,1))
+    x0 = float(np.random.uniform(0.001,0.9999,1))
     
     sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
     x = sol[:,0]
