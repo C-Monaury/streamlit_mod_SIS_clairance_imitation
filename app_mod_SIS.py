@@ -136,21 +136,56 @@ st.pyplot(figtrade)
 ################################################# Coeur du modèle
 
 # Ancienne version non fonctionelle
-def model(Y0, t ,sig,pay,c,k,A,N) :
-    I , gamma, x = Y0
-    
-    
-    dI = (1 - x) * beta(gamma ,c , k) * I * (1 - I) - gamma * I
-    dgamma = A  *gamma* (beta2(gamma,c, k) * (N - I) - 1 )
+# def model(Y0, t ,sig,pay,c,k,A,N) :
+#     #I , gamma, x = Y0
+#     I =Y0[0]
+#     gamma =Y0[1]
+#     x =Y0[2]
+
+
+#     dI = (1 - x) * beta(gamma ,c , k) * I * (1 - I) - gamma * I
+#     dgamma = A  *gamma* (beta2(gamma,c, k) * (N - I) - 1 )
+#     dx =  sig*x * (1-x)*( I - pay)
+#     return(dI,dgamma,dx)
+
+
+def cooperators( [I,gamma,x], parms):
+
+
     dx =  sig*x * (1-x)*( I - pay)
-    return(dI,dgamma,dx)
+    return(dx)
+
+def clairance([I,gamma,x], parms):
+
+    dgamma = A  *gamma* (beta2(gamma,c, k) * (N - I) - 1 )    
+    return(dgamma)
+
 
 #######Runge kunta d'ordre 4
+def runge_kunta_4(func,pas,yn):
+    k1 = func([I,gamma,x],parms)
+    k2 = func([yn + pas/2 * k1,gamma,x], parms)
+    k3 = func([yn + pas/2 * k2,gamma,x] ,parms)
+    k4 = func([yn + pas * k3,gamma,x] ,parms )
 
-#######
+    return(yn + pas*(k1 + 2*k2 + 2*k3 +k4)/6) 
 
 
+def better_ode(Y0, tmax, pas ,sig,pay,c,k,A,N):
+    i ,gamma ,x =Y0
+    parms = sig,pay,c,k,A,N
 
+    for i in t:
+        #Evolution des compartiments
+        dgamma = runge_kunta_4(clairance(),pas ,gamma )
+        dx = runge_kunta_4(cooperators(),pas , x )
+
+        di = (i + pas * beta(gamma) * (1 - x) * i)/(1 + beta(gamma)*(1 - x )*i +gamma )
+
+        #
+        i = di
+        gamma = dgamma
+        x = dx
 
 
 #valeurs de départ
@@ -167,9 +202,10 @@ with col23:
 
 ###########################PLOT2D
 st.subheader("Dynamiques des 3 compartiments en fonction du temps")
-sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N),method="RK45")
+# sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N),method="RK45",dense_output=True)
+# sol = sol.y
 
-# sol = solve_ivp(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
+sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
 
 fig1, ax1 = plt.subplots()
 ax2 = ax1.twinx()
@@ -197,8 +233,9 @@ for i in range(repet):
     c0= float(np.random.uniform(0.01,100,1))
     x0 = float(np.random.uniform(0.001,0.9999,1))
 
-    sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N),method="RK45")
-    # sol = solve_ivp(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
+    # sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N),method="RK45",dense_output=True)
+    # sol = sol.y
+    sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
     x = sol[:,0]
     z = sol[:,1]
     y = sol[:,2]
