@@ -92,7 +92,7 @@ if trade_choix == "cx^k":
     def beta(x,c, k ):
         return(c*x**k)
     def beta2(x,c, k ):
-        return((c/k)*x**(k-1))
+        return(c*k*x**(k-1))
     st.subheader("Forme du trade off")
     droite1 = np.zeros(20)
     droite2 = np.zeros(20)
@@ -167,8 +167,9 @@ with col23:
 
 ###########################PLOT2D
 st.subheader("Dynamiques des 3 compartiments en fonction du temps")
-sol = solve_ivp(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
+sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N))
 
+# sol = solve_ivp(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
 
 fig1, ax1 = plt.subplots()
 ax2 = ax1.twinx()
@@ -195,8 +196,9 @@ for i in range(repet):
     i0 = float(np.random.uniform(0.0001,0.99,1) )
     c0= float(np.random.uniform(0.01,100,1))
     x0 = float(np.random.uniform(0.001,0.9999,1))
-    
-    sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
+
+    sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N))
+    # sol = solve_ivp(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
     x = sol[:,0]
     z = sol[:,1]
     y = sol[:,2]
