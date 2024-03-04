@@ -167,7 +167,7 @@ with col23:
 
 ###########################PLOT2D
 st.subheader("Dynamiques des 3 compartiments en fonction du temps")
-sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N))
+sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N),method="RK45")
 
 # sol = solve_ivp(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
 
@@ -197,7 +197,7 @@ for i in range(repet):
     c0= float(np.random.uniform(0.01,100,1))
     x0 = float(np.random.uniform(0.001,0.9999,1))
 
-    sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N))
+    sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N),method="RK45")
     # sol = solve_ivp(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
     x = sol[:,0]
     z = sol[:,1]
