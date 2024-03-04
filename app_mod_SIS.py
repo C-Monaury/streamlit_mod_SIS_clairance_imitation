@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 from scipy.integrate import odeint
+from scipy.integrate import solve_ivp
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
@@ -132,8 +133,9 @@ if trade_choix == "(x*c)/(k+x)":
 st.pyplot(figtrade)
 
 
+################################################# Coeur du modèle
 
-
+# Ancienne version non fonctionelle
 def model(Y0, t ,sig,pay,c,k,A,N) :
     I , gamma, x = Y0
     
@@ -142,6 +144,15 @@ def model(Y0, t ,sig,pay,c,k,A,N) :
     dgamma = A  *gamma* (beta2(gamma,c, k) * (N - I) - 1 )
     dx =  sig*x * (1-x)*( I - pay)
     return(dI,dgamma,dx)
+
+#######Runge kunta d'ordre 4
+
+#######
+
+
+
+
+
 #valeurs de départ
 
 st.write("Valeurs initiales")
@@ -156,7 +167,7 @@ with col23:
 
 ###########################PLOT2D
 st.subheader("Dynamiques des 3 compartiments en fonction du temps")
-sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
+sol = solve_ivp(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
 
 
 fig1, ax1 = plt.subplots()
