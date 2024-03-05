@@ -68,7 +68,7 @@ col1, col2 = st.columns(2)
 with col1: 
     st.write("Temps de simulation")
     tmax = st.slider("Temps de simulation",1,1000)
-    temps = np.linspace(0, tmax,tmax*100)
+    
 
     st.write("Paramètres de vitesse")
     sig =st.slider("Taux d'apprentissage",min_value = 0.0, max_value = 10.0,step = 0.1)
@@ -81,8 +81,8 @@ with col2:
     c = st.slider("Capacité d'infection constante",min_value = 0.0, max_value = 10.0,step = 0.1)
     k= st.slider("Paramètre de forme",min_value = 0.0, max_value = 1.0,step = 0.01)
 
-
-
+pas = 0.01
+nbr_pas = int(tmax/pas)
 
 ###########################################Choix du trade offs
 trade_choix = st.selectbox("Choix du trade-off",["cx^k","(x*c)/(k+x)"])
@@ -149,43 +149,59 @@ st.pyplot(figtrade)
 #     return(dI,dgamma,dx)
 
 
-def cooperators( [I,gamma,x], parms):
-
-
-    dx =  sig*x * (1-x)*( I - pay)
+def cooperators(i , gamma,x ,parms = [sig,pay,c,k,A,N] ):
+    sig,pay,c,k,A,N = parms
+    dx =  sig*x * (1-x)*(i - pay)
     return(dx)
 
-def clairance([I,gamma,x], parms):
-
-    dgamma = A  *gamma* (beta2(gamma,c, k) * (N - I) - 1 )    
+def clairance(i , gamma,x, parms = [sig,pay,c,k,A,N]):
+    sig,pay,c,k,A,N = parms
+    
+    dgamma = A  *gamma* (beta2(gamma,c, k) * (N - i) - 1 )    
     return(dgamma)
 
 
 #######Runge kunta d'ordre 4
-def runge_kunta_4(func,pas,yn):
-    k1 = func([I,gamma,x],parms)
-    k2 = func([yn + pas/2 * k1,gamma,x], parms)
-    k3 = func([yn + pas/2 * k2,gamma,x] ,parms)
-    k4 = func([yn + pas * k3,gamma,x] ,parms )
+def runge_kunta_4(pas, I , gamma,x,parms = [sig,pay,c,k,A,N],name = None):
+    sig,pay,c,k,A,N = parms
+    I,gamma,x 
+    if name == "gamma":
+        k1 = clairance(I , gamma,x,parms = [sig,pay,c,k,A,N])
+        k2 = clairance(I ,gamma + k1*pas/2 ,x, parms = [sig,pay,c,k,A,N])
+        k3 = clairance(I ,gamma + k2*pas/2 ,x  ,parms = [sig,pay,c,k,A,N])
+        k4 = clairance(I ,gamma + k3*pas ,x  ,parms = [sig,pay,c,k,A,N] )
+        return(gamma + pas*(k1 + 2*k2 + 2*k3 +k4)/6) 
+        
+    if name == "coop":
+        k1 = cooperators(I , gamma,x,parms = [sig,pay,c,k,A,N])
+        k2 = cooperators(I ,gamma,x + k1*pas/2 , parms = [sig,pay,c,k,A,N] )
+        k3 = cooperators(I ,gamma,x + k2*pas/2  ,parms = [sig,pay,c,k,A,N])
+        k4 = cooperators(I ,gamma,x + k3*pas   ,parms = [sig,pay,c,k,A,N] )
+        return(x + pas*(k1 + 2*k2 + 2*k3 +k4)/6) 
 
-    return(yn + pas*(k1 + 2*k2 + 2*k3 +k4)/6) 
 
+def better_ode( tmax, pas ,Y0,parms):
+    di ,dgamma ,dx =Y0
+    sig,pay,c,k,A,N = parms
 
-def better_ode(Y0, tmax, pas ,sig,pay,c,k,A,N):
-    i ,gamma ,x =Y0
-    parms = sig,pay,c,k,A,N
-
-    for i in t:
-        #Evolution des compartiments
-        dgamma = runge_kunta_4(clairance(),pas ,gamma )
-        dx = runge_kunta_4(cooperators(),pas , x )
-
-        di = (i + pas * beta(gamma) * (1 - x) * i)/(1 + beta(gamma)*(1 - x )*i +gamma )
-
-        #
+    tab= np.zeros((nbr_pas,3))
+    
+    t = np.linspace(0,tmax,nbr_pas)
+    
+    for y in range(tmax):
         i = di
         gamma = dgamma
         x = dx
+        tab[y,0] = i
+        tab[y,1] = gamma
+        tab[y,2] = x
+        #Evolution des compartiments
+        dgamma = runge_kunta_4(pas, i , gamma,x,parms = [sig,pay,c,k,A,N], name = "gamma" )
+        dx = runge_kunta_4(pas, i , gamma,x,parms = [sig,pay,c,k,A,N], name = "coop" )
+        di = (i + pas * beta(gamma ,c , k)* (1 - x) * i)/(1 + beta(gamma ,c , k)*(1 - x )*i +gamma )
+
+    return(tab)
+        
 
 
 #valeurs de départ
@@ -205,7 +221,12 @@ st.subheader("Dynamiques des 3 compartiments en fonction du temps")
 # sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N),method="RK45",dense_output=True)
 # sol = sol.y
 
-sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
+# sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
+
+sol = better_ode( tmax , pas ,Y0 = [i0 , c0,x0],parms =[sig,pay,c,k,A,N])
+# (Y0, tmax, pas ,parms)
+
+temps = np.linspace(0,tmax,nbr_pas)
 
 fig1, ax1 = plt.subplots()
 ax2 = ax1.twinx()
@@ -235,7 +256,10 @@ for i in range(repet):
 
     # sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,pay,c,k,A,N),method="RK45",dense_output=True)
     # sol = sol.y
-    sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
+    # sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
+    
+    #sol = better_ode()
+    
     x = sol[:,0]
     z = sol[:,1]
     y = sol[:,2]
