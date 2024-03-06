@@ -18,8 +18,8 @@ st.write("On part du système SIS suivant:")
 st.latex(r'''
     \left  \{
     \begin{array}{r c l}
-      \frac{dS}{dt}  & = & B + \gamma I -\beta  S  I \\
-      \frac{dI}{dt}   & = & \beta  S  I - \gamma I 
+      \frac{dS}{dt}  & = & B + \Gamma I -\beta  S  I \\
+      \frac{dI}{dt}   & = & \beta  S  I - \Gamma I 
    \end{array}
    \right.
              ''' 
@@ -33,12 +33,12 @@ st.latex(r'''
    \right.
              ''' 
 )
-st.write("On couple ce système avec avec une dynamique d'imitation et un trade off transmission-clairance:")
+st.write("On couple ce système avec une dynamique d'imitation et un trade off transmission-clairance:")
 st.latex(r'''
     \left  \{
     \begin{array}{r c l}
-        \frac{dI}{dt}   & = & (1 - \frac{X}{N})\beta(\gamma)  (N - I)  I - \gamma I \\
-        \frac{d \gamma}{dt}   & = & A  \gamma [\beta^{'}(\gamma) (N - I) - 1 ] \\
+        \frac{dI}{dt}   & = & (1 - \frac{X}{N})\beta(\Gamma)  (N - I)  I - \Gamma I \\
+        \frac{d \Gamma}{dt}   & = & A  \Gamma [\beta^{'}(\Gamma) (N - I) - 1 ] \\
         \frac{dX}{dt}   & = & \sigma  \frac{X}{N}  (1-\frac{X}{N})(r_D  \frac{I}{N} - r_C)
    \end{array}
    \right.
@@ -46,15 +46,15 @@ st.latex(r'''
 )
 st.write("On addimentionne ce système en posant:")
 st.latex(r'''
-         i = \frac{I}{N}, c = \frac{\gamma}{\sigma}, \tau = t  \sigma, x = \frac{X}{N},\kappa = \frac{\pi_C}{\pi_D}, a = \frac{A}{\sigma}, b(\gamma)=\frac{N \beta(\gamma)}{\sigma}
+         i = \frac{I}{N}, \gamma = \frac{\Gamma}{\sigma}, \tau = t  \sigma, x = \frac{X}{N},\kappa = \frac{\pi_C}{\pi_D}, a = \frac{A}{\sigma}, b(\Gamma)=\frac{N \beta(\Gamma)}{\sigma}
          ''' 
 )
 st.write("Ce qui nous donne le système suivant:")
 st.latex(r'''
     \left  \{
     \begin{array}{r c l}
-        \frac{di}{d \tau}   & = & (1 - x ) b(c) (1 - i)  i - c i \\
-        \frac{dc}{d \tau}   & = & a  c [b^{'}(c)  (1 - i) - 1 ] \\
+        \frac{di}{d \tau}   & = & (1 - x ) b(\gamma) (1 - i)  i - \gamma i \\
+        \frac{dc}{d \tau}   & = & a  \gamma [b^{'}(\gamma)  (1 - i) - 1 ] \\
         \frac{dx}{d \tau}   & = &  x  (1-x)( i - \kappa)
    \end{array}
    \right.
