@@ -28,7 +28,7 @@ st.write("Que l'on réduit à une équation en posant N=S+I:")
 st.latex(r'''
     \left  \{
     \begin{array}{r c l}
-      \frac{dI}{dt}   & = & \beta  (N - I)  I - \gamma I 
+      \frac{dI}{dt}   & = & \beta  (N - I)  I - \Gamma I 
    \end{array}
    \right.
              ''' 
@@ -54,7 +54,7 @@ st.latex(r'''
     \left  \{
     \begin{array}{r c l}
         \frac{di}{d \tau}   & = & (1 - x ) b(\gamma) (1 - i)  i - \gamma i \\
-        \frac{dc}{d \tau}   & = & a  \gamma [b^{'}(\gamma)  (1 - i) - 1 ] \\
+        \frac{d \gamma}{d \tau}   & = & a  \gamma [b^{'}(\gamma)  (1 - i) - 1 ] \\
         \frac{dx}{d \tau}   & = &  x  (1-x)( i - \kappa)
    \end{array}
    \right.
