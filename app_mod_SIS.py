@@ -71,7 +71,7 @@ with col1:
     
 
     st.write("Paramètres de vitesse")
-    sig =st.slider("Taux d'apprentissage",min_value = 0.1, max_value = 10.0,step = 0.1)
+    sig =st.slider("Taux d'apprentissage",min_value = 0.0, max_value = 10.0,step = 0.1)
     A=st.slider("Variance de la clairance",min_value = 0.1, max_value = 10.0,step = 0.1)
     N = 1
 
