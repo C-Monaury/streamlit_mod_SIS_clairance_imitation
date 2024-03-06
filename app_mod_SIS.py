@@ -71,15 +71,15 @@ with col1:
     
 
     st.write("Paramètres de vitesse")
-    sig =st.slider("Taux d'apprentissage",min_value = 0.0, max_value = 10.0,step = 0.1)
-    A=st.slider("Variance de la clairance",min_value = 0.0, max_value = 10.0,step = 0.1)
+    sig =st.slider("Taux d'apprentissage",min_value = 0.1, max_value = 10.0,step = 0.1)
+    A=st.slider("Variance de la clairance",min_value = 0.1, max_value = 10.0,step = 0.1)
     N = 1
 
 with col2: 
     st.write("Paramètres d'intérets")
-    pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.0, max_value = 10.0,step = 0.1)
-    c = st.slider("Capacité d'infection constante",min_value = 0.0, max_value = 10.0,step = 0.1)
-    k= st.slider("Paramètre de forme",min_value = 0.0, max_value = 1.0,step = 0.01)
+    pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.1, max_value = 10.0,step = 0.1)
+    c = st.slider("Capacité d'infection constante",min_value = 0.1, max_value = 10.0,step = 0.1)
+    k= st.slider("Paramètre de forme",min_value = 0.1, max_value = 1.0,step = 0.01)
 
 pas = 0.01
 nbr_pas = int(tmax/pas)
@@ -164,7 +164,7 @@ def clairance(i , gamma,x, parms = [sig,pay,c,k,A,N]):
 #######Runge kunta d'ordre 4
 def runge_kunta_4(pas, I , gamma,x,parms = [sig,pay,c,k,A,N],name = None):
     sig,pay,c,k,A,N = parms
-    I,gamma,x 
+    
     if name == "gamma":
         k1 = clairance(I , gamma,x,parms = [sig,pay,c,k,A,N])
         k2 = clairance(I ,gamma + k1*pas/2 ,x, parms = [sig,pay,c,k,A,N])
@@ -188,7 +188,7 @@ def better_ode( tmax, pas ,Y0,parms):
     
     t = np.linspace(0,tmax,nbr_pas)
     
-    for y in range(tmax):
+    for y in range(len(t)):
         i = di
         gamma = dgamma
         x = dx
@@ -198,9 +198,11 @@ def better_ode( tmax, pas ,Y0,parms):
         #Evolution des compartiments
         dgamma = runge_kunta_4(pas, i , gamma,x,parms = [sig,pay,c,k,A,N], name = "gamma" )
         dx = runge_kunta_4(pas, i , gamma,x,parms = [sig,pay,c,k,A,N], name = "coop" )
-        di = (i + pas * beta(gamma ,c , k)* (1 - x) * i)/(1 + beta(gamma ,c , k)*(1 - x )*i +gamma )
-
+        di = (i + pas * beta(gamma ,c , k)* (1 - x) * i)/(1 + beta(gamma ,c , k)*(1 - x )*i*pas +gamma*pas )
+    
     return(tab)
+
+    
         
 
 
@@ -211,7 +213,7 @@ col21,col22,col23 = st.columns(3)
 with col21:
     i0 = st.slider("Prévalence initiale",min_value = 0.01,max_value = 1.00, step = 0.01)
 with col22:
-    c0 = st.slider("Clairance initiale",0,100)
+    c0 = st.slider("Clairance initiale",1,100)
 with col23:
     x0 = st.slider("Coopérateurs",min_value = 0.01,max_value = 1.00, step = 0.01)
 
@@ -258,7 +260,7 @@ for i in range(repet):
     # sol = sol.y
     # sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,pay,c,k,A,N))
     
-    #sol = better_ode()
+    sol = better_ode( tmax , pas ,Y0 = [i0 , c0,x0],parms =[sig,pay,c,k,A,N])
     
     x = sol[:,0]
     z = sol[:,1]
