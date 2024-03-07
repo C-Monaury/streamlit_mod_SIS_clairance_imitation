@@ -53,13 +53,33 @@ st.write("Ce qui nous donne le système suivant:")
 st.latex(r'''
     \left  \{
     \begin{array}{r c l}
-        \frac{di}{d \tau}   & = & (1 - x ) b(\gamma) (1 - i)  i - \gamma i \\
+        \frac{di}{d \tau}   & = & (1 - x ) b(\gamma) (1 - i)  i - \gamma i - 1 \\
         \frac{d \gamma}{d \tau}   & = & a  \gamma [b^{'}(\gamma)  (1 - i) - 1 ] \\
         \frac{dx}{d \tau}   & = &  x  (1-x)( i - \kappa)
    \end{array}
    \right.
              ''' 
 )
+
+modele = st.radio("Choix du modèle",["clairance-transmission", "comportement", "complet"])
+
+if modele == "clairance-transmission":
+    st.write("Dans la suite du code on utiliseras le système suivant:")
+    st.latex(r'''
+    \left  \{
+    \begin{array}{r c l}
+        \frac{di}{d \tau}   & = &  b(\gamma) (1 - i)  i - \gamma i - 1 \\
+        \frac{d \gamma}{d \tau}   & = & a  \gamma [b^{'}(\gamma)  (1 - i) - 1 ] \\
+   \end{array}
+   \right.
+             ''' 
+)
+    st.write("Qui admet les 3 points d'équilibres")
+
+    
+
+    
+
 
 
 st.header("Paramètres")
@@ -72,65 +92,83 @@ with col1:
 
     st.write("Paramètres de vitesse")
     sig =st.slider("Taux d'apprentissage",min_value = 0.0, max_value = 10.0,step = 0.1)
-    A=st.slider("Variance de la clairance",min_value = 0.1, max_value = 10.0,step = 0.1)
-    N = 1
+    
+    if modele == "clairance-transmission" or modele =="complet":
+        A=st.slider("Variance de la clairance",min_value = 0.1, max_value = 10.0,step = 0.1)
+    else:
+        A = 1
+N = 1
 
 with col2: 
     st.write("Paramètres d'intérets")
-    pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.1, max_value = 10.0,step = 0.1)
-    c = st.slider("Capacité d'infection constante",min_value = 0.1, max_value = 10.0,step = 0.1)
-    k= st.slider("Paramètre de forme",min_value = 0.1, max_value = 1.0,step = 0.01)
+    if modele == "comportement" or modele == "complet":
+        pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.1, max_value = 10.0,step = 0.1)
+    else:
+        pay = 0
+    if modele == "clairance-transmission" or modele =="complet":
+        c = st.slider("Capacité d'infection constante",min_value = 0.1, max_value = 10.0,step = 0.1)
+        k= st.slider("Paramètre de forme",min_value = 0.1, max_value = 1.0,step = 0.01)
+    else:
+        k=1
+        c = st.slider("Force de la transmission par rapport à la clairance",min_value = 0.01, max_value = 10.0,step = 0.01)
+
 
 pas = 0.01
 nbr_pas = int(tmax/pas)
 
 ###########################################Choix du trade offs
-trade_choix = st.selectbox("Choix du trade-off",["cx^k","(x*c)/(k+x)"])
+
    
-    
-if trade_choix == "cx^k":
+if modele == "clairance-transmission" or modele =="complet":
+    trade_choix = st.selectbox("Choix du trade-off",["cx^k","(x*c)/(k+x)"])
+    if trade_choix == "cx^k":
+        def beta(x,c, k ):
+            return(c*x**k)
+        def beta2(x,c, k ):
+            return(c*k*x**(k-1))
+        st.subheader("Forme du trade off")
+        droite1 = np.zeros(20)
+        droite2 = np.zeros(20)
+        droite3 = np.zeros(20)
+        for y in range(20):
+            droite1[y] = y
+            droite2[y] = y+1
+            droite3[y]=beta(y,c,k)
+        figtrade, ax1 = plt.subplots()
+        ax1.plot(range(20),droite1,"red")
+        ax1.plot(range(20),droite2,"black")
+        ax1.plot(range(20),droite3,"purple")
+        ax1.set_xlabel('Clairance')
+        ax1.set_ylabel('Transmission')
+        
+
+    if trade_choix == "(x*c)/(k+x)":
+        def beta(x,c, k ):
+            return((x*c)/(k+x))
+        def beta2(x,c, k ):
+            return((c*k)/(k+x)**2)
+        st.subheader("Forme du trade off")
+        droite1 = np.zeros(20)
+        droite2 = np.zeros(20)
+        droite3 = np.zeros(20)
+        for y in range(20):
+            droite1[y] = y
+            droite2[y] = y+1
+            droite3[y]=beta(y,c,k)
+        figtrade, ax1 = plt.subplots()
+        ax1.plot(range(20),droite1,"red")
+        ax1.plot(range(20),droite2,"black")
+        ax1.plot(range(20),droite3,"purple")
+        ax1.set_xlabel('Clairance')
+        ax1.set_ylabel('Transmission')
+
+
+    st.pyplot(figtrade)
+else:
     def beta(x,c, k ):
-        return(c*x**k)
+            return(c)
     def beta2(x,c, k ):
-        return(c*k*x**(k-1))
-    st.subheader("Forme du trade off")
-    droite1 = np.zeros(20)
-    droite2 = np.zeros(20)
-    droite3 = np.zeros(20)
-    for y in range(20):
-        droite1[y] = y
-        droite2[y] = y+1
-        droite3[y]=beta(y,c,k)
-    figtrade, ax1 = plt.subplots()
-    ax1.plot(range(20),droite1,"red")
-    ax1.plot(range(20),droite2,"black")
-    ax1.plot(range(20),droite3,"purple")
-    ax1.set_xlabel('Clairance')
-    ax1.set_ylabel('Transmission')
-    
-
-if trade_choix == "(x*c)/(k+x)":
-    def beta(x,c, k ):
-        return((x*c)/(k+x))
-    def beta2(x,c, k ):
-        return((c*k)/(k+x)**2)
-    st.subheader("Forme du trade off")
-    droite1 = np.zeros(20)
-    droite2 = np.zeros(20)
-    droite3 = np.zeros(20)
-    for y in range(20):
-        droite1[y] = y
-        droite2[y] = y+1
-        droite3[y]=beta(y,c,k)
-    figtrade, ax1 = plt.subplots()
-    ax1.plot(range(20),droite1,"red")
-    ax1.plot(range(20),droite2,"black")
-    ax1.plot(range(20),droite3,"purple")
-    ax1.set_xlabel('Clairance')
-    ax1.set_ylabel('Transmission')
-
-
-st.pyplot(figtrade)
+            return((c*k)/(k+x)**2)
 
 
 ################################################# Coeur du modèle
@@ -196,13 +234,17 @@ def better_ode( tmax, pas ,Y0,parms):
         tab[y,1] = gamma
         tab[y,2] = x
         #Evolution des compartiments
-        dgamma = runge_kunta_4(pas, i , gamma,x,parms = [sig,pay,c,k,A,N], name = "gamma" )
+        
+        if modele == "clairance-transmission" or modele =="complet":
+            dgamma = runge_kunta_4(pas, i , gamma,x,parms = [sig,pay,c,k,A,N], name = "gamma" )
+        else:
+            gamma = dgamma
         dx = runge_kunta_4(pas, i , gamma,x,parms = [sig,pay,c,k,A,N], name = "coop" )
         di = (i + pas * beta(gamma ,c , k)* (1 - x) * i)/(1 + beta(gamma ,c , k)*(1 - x )*i*pas +(gamma+1)*pas )
     
     return(tab)
 
-    
+
         
 
 
