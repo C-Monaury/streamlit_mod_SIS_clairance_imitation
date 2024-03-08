@@ -185,7 +185,7 @@ else:
 
 def cooperators(i , gamma,x ,parms = [sig,pay,c,k,A,N] ):
     sig,pay,c,k,A,N = parms
-    dx =  sig*x * (1-x)*(gamma - pay)
+    dx =  sig*x * (1-x)*(i - pay)
     return(dx)
 
 def clairance(i , gamma,x, parms = [sig,pay,c,k,A,N]):
