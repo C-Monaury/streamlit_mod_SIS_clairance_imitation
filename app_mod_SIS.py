@@ -240,7 +240,7 @@ def better_ode( tmax, pas ,Y0,parms):
         else:
             gamma = dgamma
         dx = runge_kunta_4(pas, i , gamma,x,parms = [sig,pay,c,k,A,N], name = "coop" )
-        di = (i + pas * beta(gamma ,c , k)* (1 - x) * i - pas)/(1 + beta(gamma ,c , k)*(1 - x )*i*pas +(gamma*pas )
+        di = (i + pas * beta(gamma ,c , k)* (1 - x) * i)/(1 + beta(gamma ,c , k)*(1 - x )*i*pas +(gamma+1)*pas )
     return(tab)
 
 
