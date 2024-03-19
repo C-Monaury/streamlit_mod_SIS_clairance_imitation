@@ -38,7 +38,7 @@ st.latex(r'''
     \left  \{
     \begin{array}{r c l}
         \frac{dI}{dt}   & = & (1 - \frac{X}{N})\beta(\Gamma)  (N - I)  I - \Gamma I \\
-        \frac{d \Gamma}{dt}   & = & A  \Gamma [\beta^{'}(\Gamma) (N - I) - 1 ] \\
+        \frac{d \Gamma}{dt}   & = & A  \Gamma [(1-x) \beta^{'}(\Gamma) (N - I) - 1 ] \\
         \frac{dX}{dt}   & = & \sigma  \frac{X}{N}  (1-\frac{X}{N})(r_D  \frac{I}{N} - r_C)
    \end{array}
    \right.
@@ -54,7 +54,7 @@ st.latex(r'''
     \left  \{
     \begin{array}{r c l}
         \frac{di}{d \tau}   & = & (1 - x ) b(\gamma) (1 - i)  i - \gamma i - 1 \\
-        \frac{d \gamma}{d \tau}   & = & a  \gamma [b^{'}(\gamma)  (1 - i) - 1 ] \\
+        \frac{d \gamma}{d \tau}   & = & a  \gamma [(1-x)b^{'}(\gamma)  (1 - i) - 1 ] \\
         \frac{dx}{d \tau}   & = &  x  (1-x)( i - \kappa)
    \end{array}
    \right.
