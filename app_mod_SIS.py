@@ -195,7 +195,7 @@ def cooperators(i , gamma,x ,parms = [sig,pay,c,k,A,N] ):
 def clairance(i , gamma,x, parms = [sig,pay,c,k,A,N]):
     sig,pay,c,k,A,N = parms
     
-    dgamma = A  *gamma* (beta2(gamma,c, k) * (N - i) - 1 )    
+    dgamma = A  *gamma* ((1 - x)*beta2(gamma,c, k) * (N - i) - 1 )    
     return(dgamma)
 
 
