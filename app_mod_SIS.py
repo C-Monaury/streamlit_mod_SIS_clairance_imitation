@@ -102,7 +102,7 @@ N = 1
 with col2: 
     st.write("Paramètres d'intérets")
     if modele == "comportement" or modele == "complet":
-        pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.1, max_value = 10.0,step = 0.1)
+        pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.1, max_value = 1.0,step = 0.1)
     else:
         pay = 0
     if modele == "clairance-transmission" or modele =="complet":
