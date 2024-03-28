@@ -234,7 +234,7 @@ def better_ode( tmax, pas ,Y0,parms):
 st.write("Valeurs initiales")
 col21,col22,col23 = st.columns(3)
 with col21:
-    i0 = st.slider("Prévalence initiale",min_value = 0.01,max_value = 1.00, step = 0.01)
+    i0 = st.slider("Prévalence initiale",min_value = 0.00,max_value = 1.00, step = 0.01)
 with col22:
     c0 = st.slider("virulence initiale",1,100)
 with col23:
@@ -258,7 +258,7 @@ ax2 = ax1.twinx()
 ax1.plot(temps,sol[:,0],"red")
 ax1.plot(temps,sol[:,2],"black")
 ax2.plot(temps,sol[:,1],"purple")
-ax2.set_ylim(0,10)
+ax2.set_ylim(-0.5,10)
 
 ax1.set_xlabel('Temps')
 ax1.set_ylabel('Prévalence', color='red')
@@ -281,9 +281,9 @@ for i in range(repet):
 
     # sol = solve_ivp(model, y0 = [i0 , c0,x0], t_span = (0,tmax),args = (sig,supinfec,pay,c,k,A,p,q,N),method="RK45",dense_output=True)
     # sol = sol.y
-    sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,supinfec,pay,c,k,A,p,q,N))
-    
-    #sol = better_ode( tmax , pas ,Y0 = [i0 , c0,x0],parms =[sig,supinfec,pay,c,k,A,p,q,N])
+    #sol = odeint(model, y0 = [i0 , c0,x0], t=temps,args = (sig,supinfec,pay,c,k,A,p,q,N))
+    #sol = solve_ivp(model,[0,tmax], y0 = [i0 , c0,x0], t=temps,args = (sig,supinfec,pay,c,k,A,p,q,N),method="RK23")
+    sol = better_ode( tmax , pas ,Y0 = [i0 , c0,x0],parms =[sig,supinfec,pay,c,k,A,p,q,N])
     
     x = sol[:,0]
     z = sol[:,1]
