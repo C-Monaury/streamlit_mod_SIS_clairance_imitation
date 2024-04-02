@@ -140,7 +140,7 @@ if modele == "clairance-transmission" or modele =="complet":
         ax1.plot(range(20),droite3,"purple")
         ax1.set_xlabel('Clairance')
         ax1.set_ylabel('Transmission')
-        
+ 
 
     if trade_choix == "(x*c)/(k+x)":
         def beta(x,c, k ):

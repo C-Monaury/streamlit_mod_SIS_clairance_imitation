@@ -56,9 +56,9 @@ if virpre == "forme 3":
     def virulenceprevalence(alpha, i ,p,q):
         return((alpha/(alpha+ 1))**p *(i/N)**q) 
 if virpre == "forme 4":
-    st.latex(r'''\frac{\alpha}{\alpha +\mu}^{p} \frac{I}{N}^{1-p}''')
+    st.latex(r'''\frac{\alpha} \frac{I}{N}''')
     def virulenceprevalence(alpha, i ,p,q):
-        return((alpha/(alpha+1))**p *(i/N)**(1 -p)) 
+        return(alpha *(i/N) ) 
 
 
 ##############################################################################PARAMETRES
@@ -86,7 +86,7 @@ N = 1
 
 with col2: 
     st.write("Paramètres d'intérets")
-    pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.1, max_value = 1.0,step = 0.01)
+    pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.1, max_value = 10.0,step = 0.01)
     
     c = st.slider("Capacité d'infection constante",min_value = 0.1, max_value = 10.0,step = 0.1)
     k= st.slider("Paramètre de forme",min_value = 0.1, max_value = 1.0,step = 0.01)
@@ -164,7 +164,7 @@ def model(Y0, t ,sig,supinfec,pay,c,k,A,p,q,N) :
 
 
     dI = (1 - x) * beta(alpha ,c , k) * I * (1 - I) - alpha * I - I
-    dalpha = A  *alpha* ((1-x)*beta2(alpha,c, k) * (N - i + i* supinfec) - 1 )  
+    dalpha = A  *alpha* ((1-x)*beta2(alpha,c, k) * (N - I + I* supinfec) - 1 )  
     dx =  sig*x * (1-x)*(virulenceprevalence(alpha,i,p ,q) - pay)
     return(dI,dalpha,dx)
 
