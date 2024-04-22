@@ -172,7 +172,7 @@ def sains(s,i , alpha,x ,parms = [sig,supinfec,B,mu,pay,c,k,A,p,q] ):
 def virulence(s,i , alpha,x, parms = [sig,supinfec,B,mu,pay,c,k,A,p,q]):
     sig,supinfec,B,mu,pay,c,k,A,p,q= parms
     
-    dalpha = A  *alpha* ((1-x)*beta2(alpha,c, k) * (s + i* supinfec) - 1 )    
+    dalpha = A  *((1-x)*beta2(alpha,c, k) * (s + i* supinfec) - 1 )    
     return(dalpha)
 
 
