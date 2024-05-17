@@ -47,8 +47,8 @@ with col2:
     
     c = st.slider("Capacité d'infection constante",min_value = 0.0, max_value = 10.0,step = 0.1)
     k= st.slider("Paramètre de forme",min_value = 0.10, max_value = 1.0,step = 0.01)
-    B = st.slider("rho 0",min_value = 0.0, max_value = 10.0,step = 0.01)
-    mu = st.slider("Rho 1",min_value = 0.0, max_value = 10.0,step = 0.01)
+    B = st.slider("Taux de natalité",min_value = 0.0, max_value = 10.0,step = 0.01)
+    mu = st.slider("RTaux de mortalit&",min_value = 0.0, max_value = 10.0,step = 0.01)
 
 
 pas = 0.01
@@ -155,9 +155,9 @@ def model_sanscoop(Y0, t ,B, c, k, mu, A, supinfec,sig,pay) :
 st.write("Valeurs initiales")
 col221,col21,col22,col23 = st.columns(4)
 with col221:
-    s0 = st.slider("Sains initiale",min_value = 0.0,max_value = 100.0, step = 0.01)
+    s0 = st.slider("Sains initiale",min_value = 0.0,max_value = 100.0, step = 1.0)
 with col21:
-    i0 = st.slider("Prévalence initiale",min_value = 0.0,max_value = 100.0, step = 0.01)
+    i0 = st.slider("Prévalence initiale",min_value = 0.0,max_value = 100.0, step = 1.0)
 with col22:
     c0 = st.slider("Virulence initiale",0.0,10.0)
 with col23:
@@ -200,7 +200,7 @@ st.pyplot(fig1)
 fignocoop, ax1 = plt.subplots()
 ax1.plot(temps,sol_sanscoop[:,0],"green")
 ax1.plot(temps,sol_sanscoop[:,1],"red")
-ax1.plot(temps,sol_sanscoop[:,2],"black")
+ax1.plot(temps,sol_sanscoop[:,2],"purple")
 
 
 
