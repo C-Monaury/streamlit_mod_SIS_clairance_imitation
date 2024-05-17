@@ -236,14 +236,14 @@ sol_sanscoop = odeint(model_sanscoop, y0 = [s0,i0 , c0], t=temps,args = (B, c, k
 temps = np.linspace(0,tmax,nbr_pas)
 
 fig1, ax1 = plt.subplots()
-ax1.plot(temps,sol_coop[:,2],"blue")
+ax1.plot(temps,sol_coop[:,2],color="blue")
 ax1.plot(temps,sol_coop2[:,2],color = "blue",linestyle='dotted')
 ax1.plot(temps,sol_sanscoop[:,2],"black")
 
 
 
 ax1.set_xlabel('Temps')
-ax1.set_ylabel('Prévalence', color='red')
+ax1.set_ylabel('Virulence', color='red')
 ax2.set_ylabel('Coopérateurs', color='black')
 
 st.pyplot(fig1)
