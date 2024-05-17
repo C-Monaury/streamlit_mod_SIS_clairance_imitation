@@ -65,17 +65,17 @@ if trade_choix == "cx^k":
     def beta2(x,c, k ):
         return(c*k*x**(k-1))
     st.subheader("Forme du trade off")
-    droite1 = np.zeros(20)
-    droite2 = np.zeros(20)
-    droite3 = np.zeros(20)
-    for y in range(20):
-        droite1[y] = y
-        droite2[y] = y+1
+    droite1 = np.zeros(200)
+    droite2 = np.zeros(200)
+    droite3 = np.zeros(200)
+    for y in range(200):
+        droite1[y] = y/10
+        droite2[y] = 1+y/10
         droite3[y]=beta(y,c,k)
     figtrade, ax1 = plt.subplots()
-    ax1.plot(range(20),droite1,"red")
-    ax1.plot(range(20),droite2,"black")
-    ax1.plot(range(20),droite3,"purple")
+    ax1.plot(range(200),droite1,"red")
+    ax1.plot(range(200),droite2,"black")
+    ax1.plot(range(200),droite3,"purple")
     ax1.set_xlabel('Clairance')
     ax1.set_ylabel('Transmission')
         
@@ -155,9 +155,9 @@ def model_sanscoop(Y0, t ,B, c, k, mu, A, supinfec,sig,pay) :
 st.write("Valeurs initiales")
 col221,col21,col22,col23 = st.columns(4)
 with col221:
-    s0 = st.slider("Sains initiale",min_value = 0.0,max_value = 100.0, step = 1.0)
+    s0 = st.slider("Sains initiale",min_value = 0.0,max_value = 1.0, step = 0.01)
 with col21:
-    i0 = st.slider("Infectés ",min_value = 0.0,max_value = 100.0, step = 1.0)
+    i0 = st.slider("Infectés ",min_value = 0.0,max_value = 1.0, step = 0.01)
 with col22:
     c0 = st.slider("Virulence initiale",0.0,10.0)
 with col23:
@@ -221,4 +221,29 @@ st.pyplot(fignocoop)
 
 st.subheader("Evolution des virulences")
 
+
+temps = np.linspace(0,tmax,nbr_pas)
+sol = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay))
+sol = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay))
+
+sol_sanscoop = odeint(model_sanscoop, y0 = [s0,i0 , c0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay))
+
+#sol = better_ode( tmax , pas ,Y0 = [i0 , c0,x0],parms =[sig,rho0,rho1,pay,c,k,A,N])
+# (Y0, tmax, pas ,parms)
+
+temps = np.linspace(0,tmax,nbr_pas)
+
+fig1, ax1 = plt.subplots()
+ax2 = ax1.twinx()
+ax1.plot(temps,sol[:,0],"green")
+ax1.plot(temps,sol[:,1],"red")
+ax1.plot(temps,sol[:,2],"purple")
+
+
+
+ax1.set_xlabel('Temps')
+ax1.set_ylabel('Prévalence', color='red')
+ax2.set_ylabel('Coopérateurs', color='black')
+
+st.pyplot(fig1)
 
