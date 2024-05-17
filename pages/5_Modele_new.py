@@ -101,7 +101,7 @@ if trade_choix == "(x*c)/(k+x)":
     ax1.set_ylabel('Transmission')
 
 
-    st.pyplot(figtrade)
+st.pyplot(figtrade)
 
 
 ################################################# Coeur du modèle
@@ -155,11 +155,11 @@ def model_sanscoop(Y0, t ,B, c, k, mu, A, supinfec,sig,pay) :
 st.write("Valeurs initiales")
 col221,col21,col22,col23 = st.columns(4)
 with col221:
-    s0 = st.slider("Sains initiale",min_value = 0.01,max_value = 1.00, step = 0.01)
+    s0 = st.slider("Sains initiale",min_value = 0.0,max_value = 100.0, step = 0.01)
 with col21:
-    i0 = st.slider("Prévalence initiale",min_value = 0.01,max_value = 1.00, step = 0.01)
+    i0 = st.slider("Prévalence initiale",min_value = 0.0,max_value = 100.0, step = 0.01)
 with col22:
-    c0 = st.slider("Virulence initiale",1,100)
+    c0 = st.slider("Virulence initiale",0.0,10)
 with col23:
     x0 = st.slider("Coopérateurs",min_value = 0.01,max_value = 1.00, step = 0.01)
 
@@ -184,13 +184,13 @@ fig1, ax1 = plt.subplots()
 ax2 = ax1.twinx()
 ax1.plot(temps,sol[:,0],"green")
 ax1.plot(temps,sol[:,1],"red")
-ax1.plot(temps,sol[:,2],"black")
-ax2.plot(temps,sol[:,3],"purple")
+ax1.plot(temps,sol[:,2],"purple")
+ax2.plot(temps,sol[:,3],"black")
 
 
 ax1.set_xlabel('Temps')
 ax1.set_ylabel('Prévalence', color='red')
-ax2.set_ylabel('Clairance', color='purple')
+ax2.set_ylabel('Coopérateurs', color='black')
 
 st.pyplot(fig1)
 
@@ -198,7 +198,6 @@ st.pyplot(fig1)
 
 
 fignocoop, ax1 = plt.subplots()
-ax2 = ax1.twinx()
 ax1.plot(temps,sol_sanscoop[:,0],"green")
 ax1.plot(temps,sol_sanscoop[:,1],"red")
 ax1.plot(temps,sol_sanscoop[:,2],"black")
@@ -207,7 +206,7 @@ ax1.plot(temps,sol_sanscoop[:,2],"black")
 
 ax1.set_xlabel('Temps')
 ax1.set_ylabel('Prévalence', color='red')
-ax2.set_ylabel('Clairance', color='purple')
+ax1.set_ylabel('Virulence', color='purple')
 
 st.pyplot(fignocoop)
 ############################## PLOT 3D
