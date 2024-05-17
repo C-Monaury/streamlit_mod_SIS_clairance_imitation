@@ -35,7 +35,7 @@ with col1:
 
     st.write("Paramètres de vitesse")
     sig =st.slider("Taux d'apprentissage",min_value = 0.0, max_value = 10.0,step = 0.1)
-    supinfec = st.slider("supeinfection",min_value = 0.0, max_value = 10.0,step = 0.1)
+    supinfec = st.slider("supeinfection",min_value = 0.0, max_value = 1.0,step = 0.01)
     
     A=st.slider("Variance de la clairance",min_value = 0.1, max_value = 10.0,step = 0.1)
     
@@ -43,7 +43,7 @@ with col1:
 
 with col2: 
     st.write("Paramètres d'intérets")
-    pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.0, max_value = 1.0,step = 0.01)
+    pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.0, max_value = 10.0,step = 0.01)
     
     c = st.slider("Capacité d'infection constante",min_value = 0.0, max_value = 10.0,step = 0.1)
     k= st.slider("Paramètre de forme",min_value = 0.10, max_value = 1.0,step = 0.01)
@@ -122,8 +122,8 @@ def model(Y0, t ,B, c, k, mu, A, supinfec,sig,pay) :
     x =Y0[3]
     N = S + I
 
-    dS = B - (1 - x) * beta(alpha ,c , k) * I * S - mu * S
-    dI = (1 - x) * beta(alpha ,c , k) * I * S - alpha * I - I *mu
+    dS = 1 - (1 - x) * beta(alpha ,c , k) * I * S - S
+    dI = (1 - x) * beta(alpha ,c , k) * I * S - alpha * I - I
     dalpha = A  *alpha*((1-x)*beta2(alpha,c, k) * (S + I* supinfec) - 1 )  
     dx =  sig*x * (1-x)*(I - pay)
     return(dS,dI,dalpha,dx)
@@ -138,8 +138,8 @@ def model_sanscoop(Y0, t ,B, c, k, mu, A, supinfec,sig,pay) :
 
     N = S + I
 
-    dS = B - beta(alpha ,c , k) * I * S - mu * S
-    dI =  beta(alpha ,c , k) * I * S - alpha * I - I *mu
+    dS = 1 - beta(alpha ,c , k) * I * S - 1 * S
+    dI =  beta(alpha ,c , k) * I * S - alpha * I - I 
     dalpha = A  *alpha*(beta2(alpha,c, k) * (S + I* supinfec) - 1 )  
     return(dS,dI,dalpha)
 
@@ -157,7 +157,7 @@ col221,col21,col22,col23 = st.columns(4)
 with col221:
     s0 = st.slider("Sains initiale",min_value = 0.0,max_value = 100.0, step = 1.0)
 with col21:
-    i0 = st.slider("Prévalence initiale",min_value = 0.0,max_value = 100.0, step = 1.0)
+    i0 = st.slider("Infectés ",min_value = 0.0,max_value = 100.0, step = 1.0)
 with col22:
     c0 = st.slider("Virulence initiale",0.0,10.0)
 with col23:
@@ -216,3 +216,9 @@ st.pyplot(fignocoop)
 
 
 ############################## PLOT 
+
+
+
+st.subheader("Evolution des virulences")
+
+
