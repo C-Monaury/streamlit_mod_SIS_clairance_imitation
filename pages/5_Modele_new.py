@@ -159,7 +159,7 @@ with col221:
 with col21:
     i0 = st.slider("Prévalence initiale",min_value = 0.0,max_value = 100.0, step = 0.01)
 with col22:
-    c0 = st.slider("Virulence initiale",0.0,10)
+    c0 = st.slider("Virulence initiale",0.0,10.0)
 with col23:
     x0 = st.slider("Coopérateurs",min_value = 0.01,max_value = 1.00, step = 0.01)
 
@@ -209,4 +209,10 @@ ax1.set_ylabel('Prévalence', color='red')
 ax1.set_ylabel('Virulence', color='purple')
 
 st.pyplot(fignocoop)
-############################## PLOT 3D
+
+
+
+
+
+
+############################## PLOT 
