@@ -34,7 +34,7 @@ with col1:
     
 
     st.write("Paramètres de vitesse")
-    sig =st.slider("Taux d'apprentissage",min_value = 0.0, max_value = 10.0,step = 0.1)
+    sig =st.slider("Taux d'apprentissage",min_value = 0.0, max_value = 1.0,step = 0.1)
     supinfec = st.slider("supeinfection",min_value = 0.0, max_value = 1.0,step = 0.01)
     
     A=st.slider("Variance de la clairance",min_value = 0.1, max_value = 10.0,step = 0.1)
@@ -43,7 +43,7 @@ with col1:
 
 with col2: 
     st.write("Paramètres d'intérets")
-    pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.0, max_value = 10.0,step = 0.01)
+    pay = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs",min_value = 0.0, max_value = 1.0,step = 0.01)
     
     c = st.slider("Capacité d'infection constante",min_value = 0.0, max_value = 10.0,step = 0.1)
     k= st.slider("Paramètre de forme",min_value = 0.10, max_value = 1.0,step = 0.01)
@@ -223,8 +223,10 @@ st.subheader("Evolution des virulences")
 
 
 temps = np.linspace(0,tmax,nbr_pas)
-sol = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay))
-sol = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay))
+pay1 = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs1",min_value = 0.0, max_value = 1.0,step = 0.01)
+pay2 = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs2",min_value = 0.0, max_value = 1.0,step = 0.01)
+sol_coop = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay1))
+sol_coop2 = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay2))
 
 sol_sanscoop = odeint(model_sanscoop, y0 = [s0,i0 , c0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay))
 
@@ -234,10 +236,9 @@ sol_sanscoop = odeint(model_sanscoop, y0 = [s0,i0 , c0], t=temps,args = (B, c, k
 temps = np.linspace(0,tmax,nbr_pas)
 
 fig1, ax1 = plt.subplots()
-ax2 = ax1.twinx()
-ax1.plot(temps,sol[:,0],"green")
-ax1.plot(temps,sol[:,1],"red")
-ax1.plot(temps,sol[:,2],"purple")
+ax1.plot(temps,sol_coop[:,2],"blue")
+ax1.plot(temps,sol_coop2[:,2],color = "blue",linestyle='dotted')
+ax1.plot(temps,sol_sanscoop[:,2],"black")
 
 
 
