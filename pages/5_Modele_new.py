@@ -226,8 +226,8 @@ st.subheader("Evolution des virulences")
 temps = np.linspace(0,tmax,nbr_pas)
 pay1 = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs1",min_value = 0.0, max_value = 1.0,step = 0.01)
 pay2 = st.slider("Rapport du payement des coopérateurs sur celui des défecteurs2",min_value = 0.0, max_value = 1.0,step = 0.01)
-sol_coop = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay1))
-sol_coop2 = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay2))
+sol_coop = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay1,p))
+sol_coop2 = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay2,p))
 
 sol_sanscoop = odeint(model_sanscoop, y0 = [s0,i0 , c0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay))
 
