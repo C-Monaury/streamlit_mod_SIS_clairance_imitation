@@ -125,7 +125,7 @@ def model(Y0, t ,B, c, k, mu, A, supinfec,sig,pay) :
     dS = 1 - (1 - x) * beta(alpha ,c , k) * I * S - S
     dI = (1 - x) * beta(alpha ,c , k) * I * S - alpha * I - I
     dalpha = A  *alpha*((1-x)*beta2(alpha,c, k) * (S + I* supinfec) - 1 )  
-    dx =  sig*x * (1-x)*(I - pay)
+    dx =  sig*x * (1-x)*(alpha*I - pay)
     return(dS,dI,dalpha,dx)
 
 
