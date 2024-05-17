@@ -36,7 +36,7 @@ with col1:
     st.write("Paramètres de vitesse")
     sig =st.slider("Taux d'apprentissage",min_value = 0.0, max_value = 10.0,step = 0.1)
     supinfec = st.slider("supeinfection",min_value = 0.0, max_value = 1.0,step = 0.01)
-    pst.slider("Paramètre forme effet virulence",min_value = 0.0, max_value = 1.0,step = 0.01)
+    p = st.slider("Paramètre forme effet virulence",min_value = 0.0, max_value = 1.0,step = 0.01)
     
     A=st.slider("Variance de la clairance",min_value = 0.1, max_value = 10.0,step = 0.1)
     
@@ -115,7 +115,7 @@ st.pyplot(figtrade)
 
 
 
-def model(Y0, t ,B, c, k, mu, A, supinfec,sig,pay) :
+def model(Y0, t ,B, c, k, mu, A, supinfec,sig,pay,p) :
     #S, I , alpha, x = Y0
     S =Y0[0]
     I =Y0[1]
@@ -126,7 +126,7 @@ def model(Y0, t ,B, c, k, mu, A, supinfec,sig,pay) :
     dS = 1 - (1 - x) * beta(alpha ,c , k) * I * S - S
     dI = (1 - x) * beta(alpha ,c , k) * I * S - alpha * I - I
     dalpha = A  *alpha*((1-x)*beta2(alpha,c, k) * (S + I* supinfec) - 1 )  
-    dx =  sig*x * (1-x)*(alpha^p *I - pay)
+    dx =  sig*x * (1-x)*(alpha**p *I - pay)
     return(dS,dI,dalpha,dx)
 
 
@@ -171,7 +171,7 @@ st.subheader("Dynamiques des 3 compartiments en fonction du temps")
 # sol = sol.y
 
 temps = np.linspace(0,tmax,nbr_pas)
-sol = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay))
+sol = odeint(model, y0 = [s0,i0 , c0,x0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay,p))
 
 
 sol_sanscoop = odeint(model_sanscoop, y0 = [s0,i0 , c0], t=temps,args = (B, c, k, mu, A, supinfec,sig,pay))
